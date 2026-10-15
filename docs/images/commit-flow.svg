@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1090" viewBox="0 0 1280 1090" role="img" aria-labelledby="title description">
+  <title id="title">What happens on commit</title>
+  <desc id="description">The client hashes files, uploads changed blobs, creates a changeset on the server in one transaction, then moves the branch by compare and swap, which answers moved or conflict.</desc>
+  <defs>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#9C9A92" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="1090" fill="#141413"/>
+  <rect x="16" y="16" width="1248" height="1058" rx="24" fill="#1F1E1D"/>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="64" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#F5F4ED">What happens on commit</text>
+    <text x="64" y="102" font-size="15" fill="#9C9A92">Commits are made on the server. The client uploads changed files, asks for a changeset, then asks to move the branch.</text>
+    <rect x="325" y="338" width="630" height="154" rx="8" fill="#E08A6D" fill-opacity="0.05" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="325" y="338" width="56" height="26" rx="6" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="353" y="356" font-size="13" font-weight="600" text-anchor="middle" fill="#F5E6DD">loop</text>
+    <text x="395" y="356" font-size="13" fill="#D6D4CB">each changed file</text>
+    <rect x="325" y="816" width="385" height="204" rx="8" fill="#E08A6D" fill-opacity="0.05" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="325" y="816" width="56" height="26" rx="6" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="353" y="834" font-size="13" font-weight="600" text-anchor="middle" fill="#F5E6DD">alt</text>
+    <text x="395" y="834" font-size="13" fill="#D6D4CB">main had not moved</text>
+    <line x1="325" y1="912" x2="710" y2="912" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="395" y="930" font-size="13" fill="#D6D4CB">someone landed first</text>
+    <line x1="150" y1="196" x2="150" y2="1034" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="395" y1="196" x2="395" y2="1034" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="640" y1="196" x2="640" y2="1034" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="885" y1="196" x2="885" y2="1034" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="1130" y1="196" x2="1130" y2="1034" stroke="#3D3D3A" stroke-width="2"/>
+    <rect x="60" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="150" y="174" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" text-anchor="middle" fill="#F5F4ED">You</text>
+    <rect x="305" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="395" y="174" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" text-anchor="middle" fill="#F5F4ED">scion</text>
+    <rect x="550" y="140" width="180" height="56" rx="10" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="640" y="174" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" text-anchor="middle" fill="#F5F4ED">scion-server</text>
+    <rect x="795" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="885" y="174" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" text-anchor="middle" fill="#F5F4ED">MinIO</text>
+    <rect x="1040" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="1130" y="174" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" text-anchor="middle" fill="#F5F4ED">Postgres</text>
+    <path d="M150 244 H389" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="272.5" y="233" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">scion commit -m "add the readme"</text>
+    <circle cx="150" cy="244" r="11" fill="#E08A6D"/>
+    <text x="150" y="248" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">1</text>
+    <path d="M395 296 H439 V322 H403" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="451" y="314" font-size="14" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">hash every file, compare with the checkout</text>
+    <circle cx="395" cy="296" r="11" fill="#E08A6D"/>
+    <text x="395" y="300" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">2</text>
+    <path d="M395 396 H634" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="385" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">POST /blobs</text>
+    <circle cx="395" cy="396" r="11" fill="#E08A6D"/>
+    <text x="395" y="400" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">3</text>
+    <path d="M640 448 H879" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="762.5" y="437" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">store it, unless the hash is there</text>
+    <circle cx="640" cy="448" r="11" fill="#E08A6D"/>
+    <text x="640" y="452" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">4</text>
+    <path d="M395 522 H634" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="511" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">POST /changesets</text>
+    <circle cx="395" cy="522" r="11" fill="#E08A6D"/>
+    <text x="395" y="526" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">5</text>
+    <path d="M640 574 H879" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="762.5" y="563" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">check every blob exists</text>
+    <circle cx="640" cy="574" r="11" fill="#E08A6D"/>
+    <text x="640" y="578" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">6</text>
+    <path d="M640 626 H1124" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="885" y="615" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">insert changeset and file changes, one transaction</text>
+    <circle cx="640" cy="626" r="11" fill="#E08A6D"/>
+    <text x="640" y="630" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">7</text>
+    <path d="M640 678 H401" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="667" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">changeset id</text>
+    <circle cx="640" cy="678" r="11" fill="#E08A6D"/>
+    <text x="640" y="682" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">8</text>
+    <path d="M395 730 H634" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="719" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">POST /branches/main/move</text>
+    <circle cx="395" cy="730" r="11" fill="#E08A6D"/>
+    <text x="395" y="734" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">9</text>
+    <path d="M640 782 H1124" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="885" y="771" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">update main only if it still points at your parent</text>
+    <circle cx="640" cy="782" r="11" fill="#E08A6D"/>
+    <text x="640" y="786" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">10</text>
+    <path d="M640 874 H401" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="863" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">moved</text>
+    <circle cx="640" cy="874" r="11" fill="#E08A6D"/>
+    <text x="640" y="878" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">11</text>
+    <path d="M640 976 H401" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="517.5" y="965" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">conflict</text>
+    <circle cx="640" cy="976" r="11" fill="#E08A6D"/>
+    <text x="640" y="980" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">12</text>
+  </g>
+</svg>
