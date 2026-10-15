@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="560" viewBox="0 0 1280 560" role="img" aria-labelledby="title description">
+  <title id="title">How folder listings are made</title>
+  <desc id="description">A request for a folder at a changeset first checks the trees table. If the listing is saved, it is returned. If not, the server walks parents back to the first changeset, replays file changes oldest first, keeps only what sits directly inside the folder, saves it, and returns it.</desc>
+  <defs>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#E08A6D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#9C9A92" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="560" fill="#141413"/>
+  <rect x="16" y="16" width="1248" height="528" rx="24" fill="#1F1E1D"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="14" text-anchor="middle">
+    <text x="64" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="30" text-anchor="start" fill="#F5F4ED">How folder listings are made</text>
+    <text x="64" y="102" font-size="15" text-anchor="start" fill="#9C9A92">A listing at a changeset never changes, so the server works it out once and saves it.</text>
+
+    <rect x="64" y="196" width="210" height="80" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="169" y="230" fill="#F5F4ED">GET tree for</text>
+    <text x="169" y="252" fill="#F5F4ED">changeset C, folder P</text>
+
+    <path d="M274 236 H304" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <path d="M400 168 L496 236 L400 304 L304 236 Z" fill="#3A2A23" stroke="#E08A6D" stroke-width="2"/>
+    <text x="400" y="232" fill="#F5E6DD">Saved in the</text>
+    <text x="400" y="252" fill="#F5E6DD">trees table?</text>
+
+    <path d="M496 236 H1010" fill="none" stroke="#E08A6D" stroke-width="2.5" marker-end="url(#arrow-accent)"/>
+    <text x="753" y="222" fill="#E08A6D">yes · one row, answered at once</text>
+
+    <rect x="1016" y="196" width="200" height="80" rx="12" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="1116" y="242" font-size="16" fill="#F5F4ED">Return it</text>
+
+    <path d="M400 304 V374" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="418" y="345" text-anchor="start" fill="#D6D4CB">no</text>
+
+    <rect x="315" y="380" width="170" height="72" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="400" y="411" fill="#F5F4ED">Walk parents back</text>
+    <text x="400" y="431" fill="#F5F4ED">to the first changeset</text>
+
+    <path d="M485 416 H509" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <rect x="515" y="380" width="170" height="72" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="600" y="411" fill="#F5F4ED">Replay file changes</text>
+    <text x="600" y="431" fill="#F5F4ED">oldest first</text>
+
+    <path d="M685 416 H709" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <rect x="715" y="380" width="170" height="72" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="800" y="411" fill="#F5F4ED">Keep only what sits</text>
+    <text x="800" y="431" fill="#F5F4ED">directly inside P</text>
+
+    <path d="M885 416 H909" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <rect x="915" y="380" width="170" height="72" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="1000" y="411" fill="#F5F4ED">Save it in the</text>
+    <text x="1000" y="431" fill="#F5F4ED">trees table</text>
+
+    <path d="M1085 416 H1116 V282" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <text x="64" y="500" font-size="14" text-anchor="start" fill="#9C9A92">The first request for a folder replays history. Every later request for it is a single row.</text>
+  </g>
+</svg>
