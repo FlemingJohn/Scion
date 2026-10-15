@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">Scion architecture</title>
+  <desc id="description">Clients send commits, branches, history and diffs straight to scion-server. Trees and blobs come from the local disk, then scion-cache, then scion-server, which alone reads and writes Supabase Postgres and MinIO.</desc>
+  <defs>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#E08A6D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#9C9A92" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="720" fill="#141413"/>
+  <rect x="16" y="16" width="1248" height="688" rx="24" fill="#1F1E1D"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="64" y="84" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#F5F4ED">How Scion fits together</text>
+    <text x="64" y="116" font-size="16" fill="#9C9A92">Grey is the control plane. Orange is the object plane, where each layer asks the next only when it misses.</text>
+
+    <rect x="64" y="170" width="260" height="380" rx="18" fill="#262624" stroke="#3D3D3A" stroke-width="2"/>
+    <text x="88" y="204" font-size="15" font-weight="600" fill="#D6D4CB">Clients</text>
+
+    <rect x="88" y="222" width="212" height="64" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="194" y="250" font-size="15" text-anchor="middle" fill="#F5F4ED">Developer machine</text>
+    <text x="194" y="270" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12" text-anchor="middle" fill="#9C9A92">scion</text>
+
+    <rect x="88" y="302" width="212" height="64" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="194" y="330" font-size="15" text-anchor="middle" fill="#F5F4ED">CI and agent jobs</text>
+    <text x="194" y="350" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12" text-anchor="middle" fill="#9C9A92">scion</text>
+
+    <path d="M194 366 V424" fill="none" stroke="#E08A6D" stroke-width="2" marker-end="url(#arrow-accent)"/>
+
+    <rect x="88" y="430" width="212" height="84" rx="10" fill="#2A2926" stroke="#E08A6D" stroke-width="2"/>
+    <text x="194" y="460" font-size="15" text-anchor="middle" fill="#F5F4ED">Local disk</text>
+    <text x="194" y="480" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12" text-anchor="middle" fill="#9C9A92">~/.scion/objects</text>
+    <text x="194" y="499" font-size="12" text-anchor="middle" fill="#9C9A92">blobs checked by hash</text>
+
+    <text x="562" y="214" font-size="14" text-anchor="middle" fill="#D6D4CB">commit · branches · history · diff</text>
+    <path d="M324 230 H794" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="562" y="254" font-size="12" text-anchor="middle" fill="#9C9A92">control plane · every client</text>
+
+    <text x="385" y="456" font-size="14" text-anchor="middle" fill="#E08A6D">trees and blobs</text>
+    <path d="M300 472 H464" fill="none" stroke="#E08A6D" stroke-width="2" marker-end="url(#arrow-accent)"/>
+    <text x="385" y="496" font-size="12" text-anchor="middle" fill="#9C9A92">object plane · misses only</text>
+
+    <rect x="470" y="412" width="240" height="120" rx="12" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="494" y="448" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18" fill="#F5F4ED">scion-cache</text>
+    <text x="494" y="474" font-size="13" fill="#B7C9E2">one per region, in memory</text>
+    <text x="494" y="494" font-size="13" fill="#B7C9E2">limited by size in bytes</text>
+    <text x="494" y="514" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12" fill="#9C9A92">GET /statistics</text>
+
+    <path d="M710 472 H920 V296" fill="none" stroke="#E08A6D" stroke-width="2" marker-end="url(#arrow-accent)"/>
+    <text x="934" y="392" font-size="14" fill="#E08A6D">misses</text>
+
+    <rect x="800" y="170" width="240" height="120" rx="12" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="824" y="206" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18" fill="#F5F4ED">scion-server</text>
+    <text x="824" y="232" font-size="13" fill="#B7C9E2">owns history, makes commits</text>
+    <text x="824" y="252" font-size="13" fill="#B7C9E2">moves branches by compare</text>
+    <text x="824" y="272" font-size="13" fill="#B7C9E2">and swap, saves folder listings</text>
+
+    <path d="M1040 230 H1066 V200 H1090" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <path d="M1066 230 V340 H1090" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+
+    <rect x="1096" y="150" width="150" height="100" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="1114" y="182" font-size="15" font-weight="600" fill="#F5F4ED">Supabase</text>
+    <text x="1114" y="201" font-size="15" font-weight="600" fill="#F5F4ED">Postgres</text>
+    <text x="1114" y="222" font-size="12" fill="#9C9A92">changesets, branches,</text>
+    <text x="1114" y="238" font-size="12" fill="#9C9A92">file changes, trees</text>
+
+    <rect x="1096" y="290" width="150" height="100" rx="12" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="1114" y="322" font-size="15" font-weight="600" fill="#F5F4ED">MinIO</text>
+    <text x="1114" y="344" font-size="12" fill="#9C9A92">file contents, brotli</text>
+    <text x="1114" y="360" font-size="12" fill="#9C9A92">compressed, named</text>
+    <text x="1114" y="376" font-size="12" fill="#9C9A92">by SHA-256</text>
+
+    <line x1="64" y1="598" x2="1216" y2="598" stroke="#3D3D3A" stroke-width="1"/>
+
+    <path d="M64 640 H112" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="128" y="645" font-size="14" fill="#D6D4CB">Control plane: small requests that change or read history, always sent to the server.</text>
+
+    <path d="M64 672 H112" fill="none" stroke="#E08A6D" stroke-width="2" marker-end="url(#arrow-accent)"/>
+    <text x="128" y="677" font-size="14" fill="#D6D4CB">Object plane: trees and blobs never change once written, so any layer can keep and serve them.</text>
+  </g>
+</svg>
