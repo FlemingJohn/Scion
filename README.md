@@ -1,7 +1,4 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/banner-dark.svg">
-  <img alt="Scion. History lives on the server. Clients fetch only what they need." src="docs/images/banner-light.svg" width="100%">
-</picture>
+<img alt="Scion. History lives on the server. Clients fetch only what they need." src="docs/images/banner-dark.svg" width="100%">
 
 # Scion, small
 
@@ -31,7 +28,6 @@ with Anthropic.
 - [Using scion](#using-scion)
 - [Settings](#settings)
 - [Server routes](#server-routes)
-- [Project layout](#project-layout)
 - [Tests](#tests)
 - [Limits](#limits)
 
@@ -46,38 +42,7 @@ There are two paths through the system.
 - **Object plane**, in orange: folder listings and file contents go through
   caches first. Each layer asks the next one only when it misses.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"primaryColor": "#FFFFFF", "primaryTextColor": "#141413", "primaryBorderColor": "#6B6A63", "lineColor": "#6B6A63", "textColor": "#141413", "clusterBkg": "#FAF9F5", "clusterBorder": "#E8E6DC", "edgeLabelBackground": "#FAF9F5"}}}%%
-flowchart LR
-  subgraph scion[" "]
-    direction LR
-    subgraph clients["Clients"]
-      direction TB
-      developer["Developer machine"]
-      jobs["CI and agent jobs"]
-    end
-    disk["Local disk<br/>~/.scion/objects"]
-    cache["scion-cache<br/>in memory"]
-    server["scion-server<br/>owns history"]
-    database[("Supabase Postgres<br/>changesets, branches, trees")]
-    storage[("MinIO<br/>file contents by hash")]
-
-    clients -- "commit, branches, history, diff" --> server
-    clients -- "trees and blobs" --> disk
-    disk -- "misses" --> cache
-    cache -- "misses" --> server
-    server --> database
-    server --> storage
-  end
-
-  classDef service fill:#EEF3FA,stroke:#5B8FD0,stroke-width:2px,color:#141413
-  classDef store fill:#FFFFFF,stroke:#6B6A63,stroke-width:2px,color:#141413
-  class cache,server service
-  class disk,database,storage,developer,jobs store
-  style scion fill:#FAF9F5,stroke:#E8E6DC
-  style clients fill:#F0EEE6,stroke:#B8B5A9
-  linkStyle 1,2,3 stroke:#D97757,stroke-width:2px,color:#D97757
-```
+<img alt="Scion architecture: clients send commits, branches, history and diffs straight to scion-server. Trees and blobs come from the local disk, then scion-cache, then scion-server, which alone reads and writes Supabase Postgres and MinIO." src="docs/images/architecture.svg" width="100%">
 
 | Part | Runs | Job |
 |---|---|---|
@@ -384,65 +349,6 @@ Every setting has a default that works with the local setup above.
 
 The cache answers `GET /blobs/:blobHash` and `GET /changesets/:id/tree` the
 same way, plus `GET /statistics` for its hit rate.
-
----
-
-## Project layout
-
-Every file holds one thing and is named after it. The rules are in
-[CLAUDE.md](CLAUDE.md); the build steps are in [PLAN.md](PLAN.md).
-
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"primaryColor": "#FFFFFF", "primaryTextColor": "#141413", "primaryBorderColor": "#6B6A63", "lineColor": "#6B6A63", "textColor": "#141413", "clusterBkg": "#FAF9F5", "clusterBorder": "#E8E6DC", "edgeLabelBackground": "#FAF9F5"}}}%%
-flowchart TD
-  subgraph layout[" "]
-    client["client/"] -- "HTTP" --> cache["cache/"]
-    client -- "HTTP" --> server["server/"]
-    cache -- "HTTP" --> server
-    server --> diffs["diffs/"]
-    server --> branches["branches/"]
-    server --> blobs["blobs/"]
-    diffs --> trees["trees/"]
-    trees --> changesets["changesets/"]
-    changesets --> database["database/"]
-    branches --> database
-    trees --> database
-    blobs --> configuration["configuration/"]
-    database --> configuration
-  end
-
-  classDef process fill:#EEF3FA,stroke:#5B8FD0,stroke-width:2px,color:#141413
-  classDef area fill:#FFFFFF,stroke:#6B6A63,stroke-width:2px,color:#141413
-  class client,cache,server process
-  class diffs,branches,blobs,trees,changesets,database,configuration area
-  style layout fill:#FAF9F5,stroke:#E8E6DC
-  linkStyle 0,1,2 stroke:#D97757,stroke-width:2px,color:#D97757
-```
-
-```
-src/
-  types/          one type per file
-  configuration/  reads .env
-  database/       the Postgres connection
-  errors/         errors the server sends as 400
-  paths/          safe paths and joining
-  blobs/          hash, compress, store and read file contents
-  changesets/     write and read history
-  branches/       read, create and move branches
-  trees/          work out and save folder listings
-  diffs/          compare two changesets
-  server/         one route handler per file
-  cache/          memory in front of the server
-  client/         the scion command, one step per file
-  programs/       the three things you can run
-supabase/migrations/  one table per file
-tests/                mirrors src/
-docs/images/          the banners
-```
-
-`client/` and `cache/` never import `database/`, and take only the hash
-function from `blobs/`. They reach the server over HTTP, which is what lets
-them run on other machines.
 
 ---
 
