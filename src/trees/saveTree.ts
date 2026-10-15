@@ -5,7 +5,7 @@ export async function saveTree(tree: Tree): Promise<void> {
   const database = getDatabase();
   await database`
     insert into trees (changeset_id, path, entries)
-    values (${tree.changesetId}, ${tree.path}, ${JSON.stringify(tree.entries)}::jsonb)
+    values (${tree.changesetId}, ${tree.path}, ${JSON.stringify(tree.entries)}::text::jsonb)
     on conflict (changeset_id, path) do nothing
   `;
 }
