@@ -61,46 +61,11 @@ A git commit points at a snapshot of every file. A Scion changeset only lists
 **what changed against its parent**. The contents live in MinIO; the database
 keeps only hashes.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"primaryColor": "#FFFFFF", "primaryTextColor": "#141413", "primaryBorderColor": "#6B6A63", "secondaryColor": "#F0EEE6", "tertiaryColor": "#FAF9F5", "lineColor": "#D97757", "textColor": "#141413", "attributeBackgroundColorOdd": "#FFFFFF", "attributeBackgroundColorEven": "#FAF9F5", "relationLabelBackground": "#FAF9F5", "relationLabelColor": "#141413"}}}%%
-erDiagram
-  CHANGESETS ||--o{ FILE_CHANGES : "lists"
-  CHANGESETS |o--o{ CHANGESETS : "parent of"
-  BRANCHES }o--|| CHANGESETS : "points at"
-  CHANGESETS ||--o{ TREES : "derived into"
-  FILE_CHANGES }o--o| BLOBS : "blob_hash"
+<img alt="A changeset row in Postgres holds its id, author, date, message, parent and the files it changed with their blob hashes. A branch points at it. The server derives folder listings. Blob hashes point at compressed contents in MinIO." src="docs/images/changeset-shape.svg" width="100%">
 
-  CHANGESETS {
-    text id PK "sha-256 of the changeset"
-    text parent_id FK
-    text author
-    timestamptz author_date
-    text message
-  }
-  FILE_CHANGES {
-    text changeset_id PK, FK
-    text path PK
-    text kind "regular, executable or deleted"
-    text blob_hash "empty when deleted"
-  }
-  BRANCHES {
-    text name PK
-    text changeset_id FK
-  }
-  TREES {
-    text changeset_id PK, FK
-    text path PK
-    jsonb entries
-  }
-  BLOBS {
-    text key "blobs/3e/3e1f..."
-    bytes contents "brotli compressed"
-  }
-```
-
-- `CHANGESETS`, `FILE_CHANGES`, `BRANCHES` and `TREES` are Postgres tables.
-- `BLOBS` are objects in MinIO, not a table.
-- `TREES` is never written by a client. The server works it out and saves it.
+- `changesets`, `file_changes`, `branches` and `trees` are Postgres tables.
+- Blobs are objects in MinIO, not rows in a table.
+- `trees` is never written by a client. The server works it out and saves it.
 
 ---
 
@@ -109,36 +74,7 @@ erDiagram
 Commits are made **on the server**. The client uploads the changed files,
 asks for a changeset, then asks to move the branch.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"actorBkg": "#FFFFFF", "actorBorder": "#6B6A63", "actorTextColor": "#141413", "actorLineColor": "#B8B5A9", "signalColor": "#6B6A63", "signalTextColor": "#141413", "labelBoxBkgColor": "#F5E6DD", "labelBoxBorderColor": "#D97757", "labelTextColor": "#141413", "loopTextColor": "#141413", "noteBkgColor": "#F5E6DD", "noteBorderColor": "#D97757", "noteTextColor": "#141413", "sequenceNumberColor": "#FFFFFF"}}}%%
-sequenceDiagram
-  autonumber
-  box rgb(250, 249, 245) Commit
-    actor you as You
-    participant client as scion
-    participant server as scion-server
-    participant storage as MinIO
-    participant database as Postgres
-  end
-
-  you->>client: scion commit -m "add the readme"
-  client->>client: hash every file, compare with the checkout
-  loop each changed file
-    client->>server: POST /blobs
-    server->>storage: store it, unless the hash is already there
-  end
-  client->>server: POST /changesets
-  server->>storage: check every blob exists
-  server->>database: insert changeset and file changes in one transaction
-  server-->>client: changeset id
-  client->>server: POST /branches/main/move
-  server->>database: update main only if it still points at your parent
-  alt main had not moved
-    server-->>client: moved
-  else someone landed first
-    server-->>client: conflict
-  end
-```
+<img alt="The client hashes files, uploads changed blobs, creates a changeset on the server in one transaction, then moves the branch by compare and swap, which answers moved or conflict." src="docs/images/commit-flow.svg" width="100%">
 
 ---
 
@@ -147,38 +83,7 @@ sequenceDiagram
 A checkout walks folders from the top and only goes into the ones you asked
 for. Every blob is checked against its hash before it is written.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"actorBkg": "#FFFFFF", "actorBorder": "#6B6A63", "actorTextColor": "#141413", "actorLineColor": "#B8B5A9", "signalColor": "#6B6A63", "signalTextColor": "#141413", "labelBoxBkgColor": "#F5E6DD", "labelBoxBorderColor": "#D97757", "labelTextColor": "#141413", "loopTextColor": "#141413", "noteBkgColor": "#F5E6DD", "noteBorderColor": "#D97757", "noteTextColor": "#141413"}}}%%
-sequenceDiagram
-  box rgb(250, 249, 245) Checkout of main, only src
-    participant client as scion
-    participant disk as Local disk
-    participant cache as scion-cache
-    participant server as scion-server
-  end
-
-  client->>server: GET /branches/main
-  server-->>client: changeset id
-  client->>cache: GET tree of src
-  alt cache hit
-    cache-->>client: tree
-  else cache miss
-    cache->>server: GET tree of src
-    server-->>cache: tree
-    cache-->>client: tree, now kept in memory
-  end
-  loop each file in the tree
-    client->>disk: do I have this hash
-    alt on disk
-      disk-->>client: contents
-    else not on disk
-      client->>cache: GET /blobs/hash
-      cache-->>client: contents
-      client->>disk: check the hash, then keep it
-    end
-  end
-  Note over client,disk: files written, checkout state saved in .scion/
-```
+<img alt="The client asks the server where main points, gets folder listings from the cache, which asks the server on a miss, then gets each blob from local disk or the cache and checks its hash." src="docs/images/checkout-flow.svg" width="100%">
 
 ---
 
@@ -187,28 +92,7 @@ sequenceDiagram
 A folder listing at a changeset never changes, so the server works it out
 once and saves it.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"primaryColor": "#FFFFFF", "primaryTextColor": "#141413", "primaryBorderColor": "#6B6A63", "lineColor": "#6B6A63", "textColor": "#141413", "clusterBkg": "#FAF9F5", "clusterBorder": "#E8E6DC", "edgeLabelBackground": "#FAF9F5"}}}%%
-flowchart TD
-  subgraph tree[" "]
-    request["GET tree for changeset C, folder P"] --> saved{"Saved in the trees table?"}
-    saved -- "yes" --> answer["Return it"]
-    saved -- "no" --> history["Walk parents back to the first changeset"]
-    history --> replay["Replay file changes, oldest first"]
-    replay --> keep["Keep only what sits directly inside P"]
-    keep --> save["Save it in the trees table"]
-    save --> answer
-  end
-
-  classDef step fill:#FFFFFF,stroke:#6B6A63,stroke-width:2px,color:#141413
-  classDef decision fill:#F5E6DD,stroke:#D97757,stroke-width:2px,color:#141413
-  classDef result fill:#EEF3FA,stroke:#5B8FD0,stroke-width:2px,color:#141413
-  class request,history,replay,keep,save step
-  class saved decision
-  class answer result
-  style tree fill:#FAF9F5,stroke:#E8E6DC
-  linkStyle 1 stroke:#D97757,stroke-width:2px,color:#D97757
-```
+<img alt="A request for a folder checks the trees table first. If the listing is saved it is returned. If not, the server walks parents back, replays file changes oldest first, keeps what sits directly inside the folder, saves it and returns it." src="docs/images/folder-listing.svg" width="100%">
 
 ---
 
@@ -217,21 +101,7 @@ flowchart TD
 Moving a branch is a single compare and swap on one row. There is no lock.
 Whoever arrives second is told the branch moved.
 
-```mermaid
-%%{init: {"theme": "base", "fontFamily": "arial, sans-serif", "themeVariables": {"actorBkg": "#FFFFFF", "actorBorder": "#6B6A63", "actorTextColor": "#141413", "actorLineColor": "#B8B5A9", "signalColor": "#6B6A63", "signalTextColor": "#141413", "noteBkgColor": "#F5E6DD", "noteBorderColor": "#D97757", "noteTextColor": "#141413"}}}%%
-sequenceDiagram
-  box rgb(250, 249, 245) Both agents checked out main at c1
-    participant first as Agent A
-    participant server as scion-server
-    participant second as Agent B
-  end
-
-  first->>server: move main from c1 to a2
-  server-->>first: moved
-  second->>server: move main from c1 to b2
-  server-->>second: conflict, main is at a2 now
-  Note over second: b2 is saved but not on main
-```
+<img alt="Agent A moves main from c1 to a2 and succeeds. Agent B then tries to move main from c1 to b2 and gets a conflict, because main is now at a2." src="docs/images/branch-race.svg" width="100%">
 
 ---
 
