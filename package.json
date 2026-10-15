@@ -1,0 +1,32 @@
+{
+  "name": "scion",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "scion": "./bin/scion.mjs"
+  },
+  "scripts": {
+    "server": "tsx src/programs/server.ts",
+    "cache": "tsx src/programs/cache.ts",
+    "check": "tsc",
+    "test": "vitest run",
+    "storage:start": "docker compose up -d",
+    "database:start": "supabase start",
+    "database:reset": "supabase db reset"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1152.0",
+    "commander": "^15.0.0",
+    "fastify": "^5.12.7",
+    "lru-cache": "^11.5.3",
+    "postgres": "^3.4.9",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "supabase": "^2.121.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.4"
+  }
+}
