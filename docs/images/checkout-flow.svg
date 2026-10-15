@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1252" viewBox="0 0 1280 1252" role="img" aria-labelledby="title description">
+  <title id="title">What happens on checkout</title>
+  <desc id="description">The client asks the server where main points, gets folder listings from the cache, which asks the server on a miss, then gets each blob from local disk or the cache.</desc>
+  <defs>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9" fill="none" stroke="#9C9A92" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="1252" fill="#141413"/>
+  <rect x="16" y="16" width="1248" height="1220" rx="24" fill="#1F1E1D"/>
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="64" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="30" fill="#F5F4ED">What happens on checkout</text>
+    <text x="64" y="102" font-size="15" fill="#9C9A92">Only the folders you ask for. Every blob is checked against its hash before it is written.</text>
+    <rect x="80" y="382" width="1120" height="308" rx="8" fill="#E08A6D" fill-opacity="0.05" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="80" y="382" width="56" height="26" rx="6" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="108" y="400" font-size="13" font-weight="600" text-anchor="middle" fill="#F5E6DD">alt</text>
+    <text x="150" y="400" font-size="13" fill="#D6D4CB">cache hit</text>
+    <line x1="80" y1="478" x2="1200" y2="478" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="150" y="496" font-size="13" fill="#D6D4CB">cache miss</text>
+    <rect x="94" y="794" width="765.3333333333334" height="308" rx="8" fill="#E08A6D" fill-opacity="0.05" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="94" y="794" width="56" height="26" rx="6" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="122" y="812" font-size="13" font-weight="600" text-anchor="middle" fill="#F5E6DD">alt</text>
+    <text x="164" y="812" font-size="13" fill="#D6D4CB">on disk</text>
+    <line x1="94" y1="890" x2="859.3333333333334" y2="890" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="164" y="908" font-size="13" fill="#D6D4CB">not on disk</text>
+    <rect x="80" y="702" width="793.3333333333334" height="422" rx="8" fill="#E08A6D" fill-opacity="0.05" stroke="#E08A6D" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <rect x="80" y="702" width="56" height="26" rx="6" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="108" y="720" font-size="13" font-weight="600" text-anchor="middle" fill="#F5E6DD">loop</text>
+    <text x="150" y="720" font-size="13" fill="#D6D4CB">each file in the tree</text>
+    <line x1="150" y1="196" x2="150" y2="1196" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="476.6666666666667" y1="196" x2="476.6666666666667" y2="1196" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="803.3333333333334" y1="196" x2="803.3333333333334" y2="1196" stroke="#3D3D3A" stroke-width="2"/>
+    <line x1="1130" y1="196" x2="1130" y2="1196" stroke="#3D3D3A" stroke-width="2"/>
+    <rect x="60" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="150" y="174" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" text-anchor="middle" fill="#F5F4ED">scion</text>
+    <rect x="386.6666666666667" y="140" width="180" height="56" rx="10" fill="#2A2926" stroke="#9C9A92" stroke-width="2"/>
+    <text x="476.6666666666667" y="174" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" text-anchor="middle" fill="#F5F4ED">Local disk</text>
+    <rect x="713.3333333333334" y="140" width="180" height="56" rx="10" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="803.3333333333334" y="174" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" text-anchor="middle" fill="#F5F4ED">scion-cache</text>
+    <rect x="1040" y="140" width="180" height="56" rx="10" fill="#1C2836" stroke="#6A9BD8" stroke-width="2"/>
+    <text x="1130" y="174" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16" text-anchor="middle" fill="#F5F4ED">scion-server</text>
+    <path d="M150 244 H1124" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="640" y="233" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">GET /branches/main</text>
+    <circle cx="150" cy="244" r="11" fill="#E08A6D"/>
+    <text x="150" y="248" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">1</text>
+    <path d="M1130 296 H156" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="640" y="285" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">changeset id</text>
+    <circle cx="1130" cy="296" r="11" fill="#E08A6D"/>
+    <text x="1130" y="300" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">2</text>
+    <path d="M150 348 H797.3333333333334" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="476.6666666666667" y="337" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">GET tree of src</text>
+    <circle cx="150" cy="348" r="11" fill="#E08A6D"/>
+    <text x="150" y="352" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">3</text>
+    <path d="M803.3333333333334 440 H156" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="476.6666666666667" y="429" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">tree</text>
+    <circle cx="803.3333333333334" cy="440" r="11" fill="#E08A6D"/>
+    <text x="803.3333333333334" y="444" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">4</text>
+    <path d="M803.3333333333334 542 H1124" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="966.6666666666667" y="531" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">GET tree of src</text>
+    <circle cx="803.3333333333334" cy="542" r="11" fill="#E08A6D"/>
+    <text x="803.3333333333334" y="546" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">5</text>
+    <path d="M1130 594 H809.3333333333334" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="966.6666666666667" y="583" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">tree</text>
+    <circle cx="1130" cy="594" r="11" fill="#E08A6D"/>
+    <text x="1130" y="598" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">6</text>
+    <path d="M803.3333333333334 646 H156" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="476.6666666666667" y="635" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">tree, now kept in memory</text>
+    <circle cx="803.3333333333334" cy="646" r="11" fill="#E08A6D"/>
+    <text x="803.3333333333334" y="650" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">7</text>
+    <path d="M150 760 H470.6666666666667" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="313.33333333333337" y="749" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">do I have this hash</text>
+    <circle cx="150" cy="760" r="11" fill="#E08A6D"/>
+    <text x="150" y="764" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">8</text>
+    <path d="M476.6666666666667 852 H156" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="313.33333333333337" y="841" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">contents</text>
+    <circle cx="476.6666666666667" cy="852" r="11" fill="#E08A6D"/>
+    <text x="476.6666666666667" y="856" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">9</text>
+    <path d="M150 954 H797.3333333333334" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="476.6666666666667" y="943" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">GET /blobs/hash</text>
+    <circle cx="150" cy="954" r="11" fill="#E08A6D"/>
+    <text x="150" y="958" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">10</text>
+    <path d="M803.3333333333334 1006 H156" fill="none" stroke="#9C9A92" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow-muted)"/>
+    <text x="476.6666666666667" y="995" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">contents</text>
+    <circle cx="803.3333333333334" cy="1006" r="11" fill="#E08A6D"/>
+    <text x="803.3333333333334" y="1010" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">11</text>
+    <path d="M150 1058 H470.6666666666667" fill="none" stroke="#9C9A92" stroke-width="2" marker-end="url(#arrow-muted)"/>
+    <text x="313.33333333333337" y="1047" font-size="14" text-anchor="middle" fill="#F5F4ED" stroke="#1F1E1D" stroke-width="6" stroke-linejoin="round" paint-order="stroke">check the hash, then keep it</text>
+    <circle cx="150" cy="1058" r="11" fill="#E08A6D"/>
+    <text x="150" y="1062" font-size="11" font-weight="700" text-anchor="middle" fill="#1F1E1D">12</text>
+    <rect x="40" y="1132" width="546.6666666666667" height="40" rx="8" fill="#3A2A23" stroke="#E08A6D" stroke-width="1.5"/>
+    <text x="313.33333333333337" y="1157" font-size="14" text-anchor="middle" fill="#F5E6DD">files written, checkout state saved in .scion/</text>
+  </g>
+</svg>
